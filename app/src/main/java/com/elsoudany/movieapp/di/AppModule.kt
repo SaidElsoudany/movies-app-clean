@@ -1,6 +1,7 @@
 package com.elsoudany.movieapp.di
 
 import com.elsoudany.movieapp.BuildConfig
+import com.elsoudany.movieapp.TMDP_BASE_URL
 import com.elsoudany.movieapp.data.remote.MovieApiService
 import com.elsoudany.movieapp.data.repository.MoviesRepository
 import com.elsoudany.movieapp.data.repository.MoviesRepositoryImpl
@@ -30,7 +31,7 @@ object AppModule {
     fun provideApi(okHttpClient: OkHttpClient): MovieApiService {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://api.themoviedb.org/")
+            .baseUrl(TMDP_BASE_URL)
             .client(okHttpClient)
             .build()
             .create(MovieApiService::class.java)

@@ -45,4 +45,9 @@
     </string>
     <string name="movies">Movies</string>
     <string name="error_in_retrieving_data">Error in retrieving data</string>
+    <string name="movie_image">Movie image</string>
+    <string name="overview">Overview</string>
+    <string name="rating">Rating</string>
+    <string name="back_button">Back button</string>
+    <string name="genres">Genres</string>
 </resources>

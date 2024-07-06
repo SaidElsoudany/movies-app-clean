@@ -6,7 +6,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id ("kotlin-kapt")
     id("com.google.dagger.hilt.android")
-
+    id("org.jetbrains.kotlin.plugin.parcelize")
+    id("androidx.navigation.safeargs.kotlin")
 }
 val credentialsFile = rootProject.file("credentials.properties")
 val credentialsProperties = Properties().apply {
