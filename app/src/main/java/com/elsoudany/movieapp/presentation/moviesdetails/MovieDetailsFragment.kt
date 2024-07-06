@@ -7,25 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.elsoudany.movieapp.R
+import com.elsoudany.movieapp.databinding.FragmentMovieDetailsBinding
 
 class MovieDetailsFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = MovieDetailsFragment()
-    }
-
     private val viewModel: MovieDetailsViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
-    }
+    private lateinit var binding: FragmentMovieDetailsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_movie_details, container, false)
+        binding = FragmentMovieDetailsBinding.inflate(layoutInflater,container, false)
+        return binding.root
     }
 }
