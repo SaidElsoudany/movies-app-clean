@@ -9,8 +9,8 @@ import com.elsoudany.movieapp.models.MovieDto
 
 interface MoviesRepository {
 
-    suspend fun downloadMovies(pageNumber: Int, isRefresh: Boolean): GenericResult<List<MovieDto>>
-    suspend fun downloadGenres(): GenericResult<List<GenreDto>>
+    suspend fun downloadMovies(pageNumber: Int, isRefresh: Boolean): GenericResult<Unit>
+    suspend fun downloadGenres(): GenericResult<Unit>
     fun getAllMovies(): LiveData<List<MovieEntity>>
 
     suspend fun getAllGenres() : List<GenreEntity>

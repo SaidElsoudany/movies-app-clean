@@ -78,6 +78,9 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    kaptTest(libs.hilt.android.compiler)
+    kaptAndroidTest(libs.hilt.android.compiler)
+
 
     //Retrofit
     implementation(libs.retrofit)
@@ -95,5 +98,10 @@ dependencies {
     implementation(libs.room.ktx)
     // Test helpers
     testImplementation(libs.androidx.room.testing)
+
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.core.testing)
+    debugImplementation(libs.truth)
+
 
 }
