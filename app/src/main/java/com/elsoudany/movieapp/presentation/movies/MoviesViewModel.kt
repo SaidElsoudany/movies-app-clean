@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.elsoudany.movieapp.R
 import com.elsoudany.movieapp.data.repository.MoviesRepository
 import com.elsoudany.movieapp.models.GenericResult
-import com.elsoudany.movieapp.models.MovieDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,30 +15,30 @@ import javax.inject.Inject
 class MoviesViewModel @Inject constructor(
     private val repository: MoviesRepository
 ) : ViewModel() {
-    private val _moviesData: MutableLiveData<List<MovieDto>?> = MutableLiveData()
-    val moviesData: LiveData<List<MovieDto>?> = _moviesData
+    val moviesData = repository.getAllMovies()
 
-    private val _errorMessage: MutableLiveData<Int?> = MutableLiveData()
-    val errorMessage: LiveData<Int?> = _errorMessage
-    fun downloadMovies(page: Int) {
+    private val _message: MutableLiveData<Int?> = MutableLiveData()
+    val message: LiveData<Int?> = _message
+
+
+    fun downloadMovies(page: Int, isRefresh: Boolean = false) {
         viewModelScope.launch {
-            when(val response = repository.downloadMovies(page)) {
-                is GenericResult.Success -> _moviesData.value = response.data
-                is GenericResult.Error -> _errorMessage.value = R.string.error_in_retrieving_data
+            val response = repository.downloadMovies(page, isRefresh)
+            when (response) {
+                is GenericResult.Error -> _message.value = R.string.error_in_retrieving_data
+                is GenericResult.Success -> _message.value = R.string.loaded_page
             }
         }
     }
-    fun getGenres(){
+
+    fun getGenres() {
         viewModelScope.launch {
-            repository.getGenres()
+            repository.downloadGenres()
         }
     }
-    fun moviesDataHandled(){
-        _moviesData.value = null
-    }
 
-    fun errorMsgHandled(){
-        _errorMessage.value = null
+    fun messageHandled() {
+        _message.value = null
     }
 
 }

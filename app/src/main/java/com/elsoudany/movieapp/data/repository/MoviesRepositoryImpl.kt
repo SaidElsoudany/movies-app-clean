@@ -1,16 +1,30 @@
 package com.elsoudany.movieapp.data.repository
 
+import androidx.lifecycle.LiveData
+import com.elsoudany.movieapp.data.local.AppDatabase
+import com.elsoudany.movieapp.data.local.entity.GenreEntity
+import com.elsoudany.movieapp.data.local.entity.MovieEntity
 import com.elsoudany.movieapp.data.remote.MovieApiService
 import com.elsoudany.movieapp.models.GenericResult
 import com.elsoudany.movieapp.models.GenreDto
 import com.elsoudany.movieapp.models.MovieDto
-import okhttp3.Response
+import com.elsoudany.movieapp.toGenreEntityList
+import com.elsoudany.movieapp.toMovieEntityList
 import javax.inject.Inject
 
 class MoviesRepositoryImpl @Inject constructor(
-    private val remoteDataSource: MovieApiService
+    private val remoteDataSource: MovieApiService,
+    private val appDatabase: AppDatabase
 ) : MoviesRepository {
-    override suspend fun downloadMovies(pageNumber: Int): GenericResult<List<MovieDto>> {
+    override fun getAllMovies(): LiveData<List<MovieEntity>> {
+        return appDatabase.movieDao().getAllMovies()
+    }
+
+    override suspend fun getAllGenres(): List<GenreEntity> {
+        return appDatabase.genreDao().getAllGenres()
+    }
+
+    override suspend fun downloadMovies(pageNumber: Int, isRefresh: Boolean): GenericResult<List<MovieDto>> {
         return try {
             val moviesResponse = remoteDataSource.downloadMovies(pageNumber)
             if (moviesResponse.isSuccessful) {
@@ -20,6 +34,8 @@ class MoviesRepositoryImpl @Inject constructor(
                     results.forEach { movie ->
                         movie.page = it.page
                     }
+                    if (isRefresh) appDatabase.movieDao().deleteAllMovies()
+                    appDatabase.movieDao().insertMoviesList(results.toMovieEntityList())
                     GenericResult.Success(it.results)
                 } ?: GenericResult.Error("Empty response")
             } else {
@@ -29,13 +45,14 @@ class MoviesRepositoryImpl @Inject constructor(
             GenericResult.Error(e.message)
         }
     }
-    override suspend fun getGenres(): GenericResult<List<GenreDto>> {
+    override suspend fun downloadGenres(): GenericResult<List<GenreDto>> {
         return try {
             val genresResponse = remoteDataSource.getGenres()
             if (genresResponse.isSuccessful) {
                 val body = genresResponse.body()
                 body?.let {
-                    GenericResult.Success(it.genresList)
+                    appDatabase.genreDao().insertGenresList(it.genres.toGenreEntityList())
+                    GenericResult.Success(it.genres)
                 } ?: GenericResult.Error("Empty response")
             }else{
                 GenericResult.Error(genresResponse.message())
@@ -44,5 +61,6 @@ class MoviesRepositoryImpl @Inject constructor(
             GenericResult.Error(e.message)
         }
     }
+
 
 }

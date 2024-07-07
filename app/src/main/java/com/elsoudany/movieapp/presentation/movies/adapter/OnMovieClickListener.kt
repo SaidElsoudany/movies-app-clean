@@ -1,7 +1,7 @@
 package com.elsoudany.movieapp.presentation.movies.adapter
 
-import com.elsoudany.movieapp.models.MovieDto
+import com.elsoudany.movieapp.data.local.entity.MovieEntity
 
-class OnMovieClickListener(val clickListener: (movie: MovieDto) -> Unit) {
-    fun onClick(movie: MovieDto) = clickListener(movie)
+class OnMovieClickListener(val clickListener: (movie: MovieEntity) -> Unit) {
+    fun onClick(movie: MovieEntity) = clickListener(movie)
 }

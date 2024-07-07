@@ -5,23 +5,23 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.elsoudany.movieapp.data.local.entity.MovieEntity
 import com.elsoudany.movieapp.databinding.ItemMovieBinding
-import com.elsoudany.movieapp.models.MovieDto
 
 class MoviesAdapter(private val clickListener: OnMovieClickListener) :
-    ListAdapter<MovieDto, MoviesViewHolder>(Companion) {
-    companion object : DiffUtil.ItemCallback<MovieDto>() {
+    ListAdapter<MovieEntity, MoviesViewHolder>(Companion) {
+    companion object : DiffUtil.ItemCallback<MovieEntity>() {
         override fun areItemsTheSame(
-            oldItem: MovieDto,
-            newItem: MovieDto
+            oldItem: MovieEntity,
+            newItem: MovieEntity
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(
-            oldItem: MovieDto,
-            newItem: MovieDto
+            oldItem: MovieEntity,
+            newItem: MovieEntity
         ): Boolean {
             return oldItem == newItem
         }
@@ -33,7 +33,7 @@ class MoviesAdapter(private val clickListener: OnMovieClickListener) :
     }
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
-        val currentItem = currentList[position]
+        val currentItem = getItem(position)
         currentItem?.let {
             holder.bind(currentItem, clickListener)
         }

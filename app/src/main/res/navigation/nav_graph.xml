@@ -20,6 +20,6 @@
         tools:layout="@layout/fragment_movie_details" >
         <argument
             android:name="movie"
-            app:argType="com.elsoudany.movieapp.models.MovieDto" />
+            app:argType="com.elsoudany.movieapp.data.local.entity.MovieEntity" />
     </fragment>
 </navigation>

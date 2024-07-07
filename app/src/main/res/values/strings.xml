@@ -50,4 +50,6 @@
     <string name="rating">Rating</string>
     <string name="back_button">Back button</string>
     <string name="genres">Genres</string>
+    <string name="loaded_page">New page loaded</string>
+    <string name="empty_list_text">Swipe to fetch movies</string>
 </resources>
